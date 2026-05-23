@@ -9,7 +9,7 @@ import { useState } from 'react';
 const PROFILE = {
   name: 'Emmanuel Darkwa',
   headline:
-    'Product manager who can build. I ship products, define the metrics, and write the pipeline if I have to.',
+    'Product manager and builder. I ship products, define the metrics, and engineer what needs to be engineered.',
   sub:
     'I sit at the intersection of product thinking and data engineering. I\'ve launched AI features, built forecasting tools for Division I athletics, and delivered analytics systems for a Fortune 500 company. I own problems end-to-end.',
   email: 'emmandark7@gmail.com',
