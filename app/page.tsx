@@ -3,7 +3,8 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, Github, Linkedin, Mail, ExternalLink, Sparkles, TrendingUp, MessageSquare, BarChart2, ShieldAlert, Activity, Building2, Database, HeartPulse, Shield, Lightbulb } from 'lucide-react';
+import { ArrowRight, Download, Github, Linkedin, Mail, ExternalLink, Sparkles, TrendingUp, MessageSquare, BarChart2, ShieldAlert, Activity, Building2, Database, HeartPulse, Shield, Lightbulb, Menu, X } from 'lucide-react';
+import { useState } from 'react';
 
 const PROFILE = {
   name: 'Emmanuel Darkwa',
@@ -24,23 +25,27 @@ const fade = {
   show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
 };
 
+const NAV_LINKS = [
+  ['About', 'about'],
+  ['Work', 'work'],
+  ['Projects', 'projects'],
+  ['Certifications', 'certs'],
+  ['LinkedIn', '/linkedin'],
+  ['Creatives', '/creatives'],
+  ['Contact', 'contact'],
+];
+
 function Nav() {
+  const [open, setOpen] = useState(false);
   return (
     <div className="fixed top-0 inset-x-0 z-50 bg-[#0E0B14]/60 backdrop-blur-md">
       <div className="container h-14 flex items-center justify-between">
         <a href="#home" className="text-white/90 hover:text-white font-medium">
           Emmanuel Darkwa
         </a>
+        {/* Desktop */}
         <div className="hidden sm:flex items-center gap-2">
-          {[
-            ['About', 'about'],
-            ['Work', 'work'],
-            ['Projects', 'projects'],
-            ['Certifications', 'certs'],
-            ['LinkedIn', '/linkedin'],
-            ['Creatives', '/creatives'],
-            ['Contact', 'contact'],
-          ].map(([label, id]) => (
+          {NAV_LINKS.map(([label, id]) => (
             <a
               key={id}
               href={id.startsWith('/') ? id : `#${id}`}
@@ -53,8 +58,34 @@ function Nav() {
             <Download className="w-4 h-4 mr-1" /> Resume
           </a>
         </div>
+        {/* Mobile hamburger */}
+        <button
+          className="sm:hidden p-2 text-white/80 hover:text-white"
+          onClick={() => setOpen(!open)}
+          aria-label="Toggle menu"
+        >
+          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
       </div>
       <div className="section-divider" />
+      {/* Mobile menu */}
+      {open && (
+        <div className="sm:hidden bg-[#0E0B14]/95 backdrop-blur-md px-4 pb-4 flex flex-col gap-1">
+          {NAV_LINKS.map(([label, id]) => (
+            <a
+              key={id}
+              href={id.startsWith('/') ? id : `#${id}`}
+              onClick={() => setOpen(false)}
+              className="px-3 py-2.5 rounded-lg text-white/75 hover:text-white hover:bg-white/10 text-sm"
+            >
+              {label}
+            </a>
+          ))}
+          <a href="/resume" onClick={() => setOpen(false)} className="btn-primary mt-2 w-full justify-center">
+            <Download className="w-4 h-4 mr-1" /> Resume
+          </a>
+        </div>
+      )}
     </div>
   );
 }
