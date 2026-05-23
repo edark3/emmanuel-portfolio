@@ -166,7 +166,7 @@ export default function Page() {
           <motion.div initial={{ opacity: 0, scale: .98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: .6 }}>
             <div className="panel p-2">
               <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[18px]">
-                <Image src="/Headshot.jpg" alt="Emmanuel Darkwa" fill className="object-cover object-top" priority />
+                <Image src="/headshot-old.jpg" alt="Emmanuel Darkwa" fill className="object-cover object-top" priority />
               </div>
               <div className="absolute bottom-3 right-3 glass px-3 py-2 rounded-full text-sm inline-flex items-center">
                 <Sparkles className="w-4 h-4 mr-1" /> Always building
