@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, Download, Github, Linkedin, Mail, ExternalLink, Sparkles, TrendingUp, MessageSquare, BarChart2, ShieldAlert, Activity, Building2, Database, HeartPulse, Shield, Lightbulb, Menu, X } from 'lucide-react';
+import { ArrowRight, Download, Github, Linkedin, Mail, ExternalLink, Sparkles, TrendingUp, MessageSquare, BarChart2, ShieldAlert, Activity, Building2, Database, HeartPulse, Shield, Lightbulb, Menu, X, Workflow } from 'lucide-react';
 import { useState } from 'react';
 
 const PROFILE = {
@@ -262,6 +262,13 @@ export default function Page() {
         <div className="grid md:grid-cols-2 gap-6">
           {[
             {
+              icon: Workflow,
+              title: 'Automated Data Pipeline (Sports Analytics Integration)',
+              desc: 'Built automated Python pipelines that replaced a manual multi-step download process, extracting six data types from a third-party sports analytics platform across both REST API and FTP channels. Integrated the REST API via OAuth 2.0 and parsed 2,400+ session records into pandas DataFrames. Engineered an FTP workflow that filtered a national data-sharing network from ~11,000 files (2.8 GB) down to 110 relevant files (23 MB), cutting extraction time with MLSD batch listing. Secured all credentials and private athlete data with environment variables and gitignore policies.',
+              tags: ['Python', 'REST APIs', 'OAuth 2.0', 'FTP', 'pandas', 'ETL'],
+              links: [],
+            },
+            {
               icon: TrendingUp,
               title: 'Financial Operations Forecasting',
               desc: 'Built driver-based forecasting models and budget dashboards for a Division I athletics program. Unified historical actuals with forward-looking assumptions so leadership could scenario-plan in real time instead of waiting on static spreadsheets.',
@@ -292,8 +299,8 @@ export default function Page() {
             {
               icon: Activity,
               title: 'Basketball Personnel Reporting Tool',
-              desc: 'Full-stack scouting and roster strategy dashboard covering NBA, WNBA, NCAAM, and NCAAW. Built a custom Player Impact Value (PIV) tier system, modeled NIL estimates for every college player from performance and conference data, and analyzed the pre/post-NIL era using a team-strength formula with recency decay. Four tabs: cap analysis, player development curves, full roster views, and an NCAA case study on how championship programs are built.',
-              tags: ['Next.js', 'Data Modeling', 'Basketball Analytics', 'NIL Strategy'],
+              desc: 'Full-stack scouting and roster strategy dashboard across four leagues (NBA, WNBA, NCAA M/W). Designed a team-strength model with era-adjusted weights (pre/post-NIL) and exponential recency decay to rank top programs over a 10-year window, plus an NIL valuation model estimating compensation for 1,000+ college players from performance metrics, conference strength, and playing time. Interactive Recharts visualizations analyze pre vs. post-NIL roster trends, with raw CSV data transformed at build time via PapaParse.',
+              tags: ['Next.js', 'TypeScript', 'Data Modeling', 'Recharts', 'NIL Strategy'],
               links: [],
             },
             {
