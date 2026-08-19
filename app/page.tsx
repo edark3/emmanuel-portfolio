@@ -237,10 +237,11 @@ export default function Page() {
       <Section id="certs" title="Certifications">
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
-            { name: 'CompTIA Security+ (SY0-701)', status: 'In Progress • 80%', img: '/certs/comptia.png', bar: 80 },
-            { name: 'AWS Cloud Practitioner', status: 'In Progress • 80%', img: '/certs/aws.jpeg', bar: 80 },
+            { name: 'Certificate in Cybersecurity — Information Trust Institute, UIUC', status: 'Completed • Aug 2026', img: '/certs/iti_cyber.png', bar: 100 },
             { name: 'SAFe® POPM (Product Owner / Product Manager)', status: 'Completed', img: '/certs/safepopm.png', bar: 100 },
             { name: 'Cisco: Introduction to Cybersecurity', status: 'Completed', img: '/certs/ciscocyb.png', bar: 100 },
+            { name: 'CompTIA Security+ (SY0-701)', status: 'In Progress • 80%', img: '/certs/comptia.png', bar: 80 },
+            { name: 'AWS Cloud Practitioner', status: 'In Progress • 80%', img: '/certs/aws.jpeg', bar: 80 },
           ].map((c,i)=> (
             <div key={i} className="panel overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -287,6 +288,13 @@ export default function Page() {
               title: 'Operational Analytics Dashboards',
               desc: 'Modeled KPIs end-to-end in dbt, wired them into a Power BI layer, and established a single source of truth across multiple data sources. Delivered dashboards that non-technical stakeholders actually adopted, not just opened once.',
               tags: ['SQL', 'dbt', 'Power BI'],
+              links: [],
+            },
+            {
+              icon: Workflow,
+              title: 'NASA Space Apps Challenge: The Urban Planning Initiative',
+              desc: 'Designed the backend architecture for a tool helping Chicago city planners identify environmental and socioeconomic patterns. Built API endpoints, data processing pipelines, and AI-powered insight modules supporting real-time analysis of population density, air quality, income, and weather data. Integrated geospatial and statistical datasets from multiple sources, delivered under hackathon time constraints on a multidisciplinary team.',
+              tags: ['Backend', 'APIs', 'Geospatial Data', 'AI'],
               links: [],
             },
             {
