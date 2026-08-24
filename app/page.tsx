@@ -9,9 +9,9 @@ import { useState } from 'react';
 const PROFILE = {
   name: 'Emmanuel Darkwa',
   headline:
-    'Product manager and builder. I ship products, define the metrics, and engineer what needs to be engineered.',
+    'I build data systems and the products they power. Pipelines, models, and the dashboards people actually make decisions with.',
   sub:
-    'I sit at the intersection of product thinking and data engineering. I\'ve launched AI features, built forecasting tools for Division I athletics, and delivered analytics systems for a Fortune 500 company. I own problems end-to-end.',
+    'Currently building data infrastructure inside a Division I athletics operation: automated ingestion across REST API and FTP sources, and the reporting leadership runs on. I\'ve also launched AI features and delivered analytics systems for a Fortune 500 company. I own problems end-to-end.',
   email: 'emmandark7@gmail.com',
   resume: '/Emmanuel_Darkwa_Resume.pdf',
   socials: {
