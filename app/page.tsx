@@ -295,7 +295,7 @@ export default function Page() {
               title: 'NASA Space Apps Challenge: The Urban Planning Initiative',
               desc: 'Designed the backend architecture for a tool helping Chicago city planners identify environmental and socioeconomic patterns. Built API endpoints, data processing pipelines, and AI-powered insight modules supporting real-time analysis of population density, air quality, income, and weather data. Integrated geospatial and statistical datasets from multiple sources, delivered under hackathon time constraints on a multidisciplinary team.',
               tags: ['Backend', 'APIs', 'Geospatial Data', 'AI'],
-              links: [],
+              links: [{ label: 'View the code', href: 'https://github.com/edark3/chicago-urban-planning-tool' }],
             },
             {
               icon: ShieldAlert,
