@@ -43,3 +43,48 @@ body {
 .display { @apply text-3xl sm:text-5xl font-semibold leading-tight; }
 
 .section-divider { @apply h-px bg-white/10 w-full; }
+
+/* ---------------------------------------------------------------- a11y */
+
+/*
+ * Visible focus indicator. Tailwind's preflight resets the browser's default
+ * outline, and nothing replaced it, so keyboard users had no way to tell where
+ * they were on the page. WCAG 2.4.7 (Focus Visible, AA).
+ *
+ * :focus-visible rather than :focus, so the ring appears for keyboard
+ * navigation but not on mouse clicks.
+ */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid #C4A7FF;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Skip link: off-screen until focused, then pinned top-left. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 0.75rem;
+  top: 0.75rem;
+  @apply px-4 py-2 rounded-lg bg-white text-black font-medium;
+}
+
+/*
+ * Respect the OS "reduce motion" setting. Vestibular disorders and motion
+ * sensitivity make transforms and long transitions genuinely unpleasant, and
+ * this page animates ~11 elements.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -38,7 +38,7 @@ const NAV_LINKS = [
 function Nav() {
   const [open, setOpen] = useState(false);
   return (
-    <div className="fixed top-0 inset-x-0 z-50 bg-[#0E0B14]/60 backdrop-blur-md">
+    <nav aria-label="Main" className="fixed top-0 inset-x-0 z-50 bg-[#0E0B14]/60 backdrop-blur-md">
       <div className="container h-14 flex items-center justify-between">
         <a href="#home" className="text-white/90 hover:text-white font-medium">
           Emmanuel Darkwa
@@ -86,7 +86,7 @@ function Nav() {
           </a>
         </div>
       )}
-    </div>
+    </nav>
   );
 }
 
@@ -109,9 +109,11 @@ function Section({ id, title, children }: { id: string; title?: string; children
 export default function Page() {
   return (
     <div className="min-h-screen">
-      <div className="hero-bg" />
+      <div className="hero-bg" aria-hidden="true" />
+      <a href="#main" className="skip-link">Skip to main content</a>
       <Nav />
 
+      <main id="main">
       {/* HERO */}
       <section id="home" className="pt-24 sm:pt-28 pb-8">
         <div className="container grid md:grid-cols-[1.1fr,0.9fr] gap-12 items-center">
@@ -137,10 +139,10 @@ export default function Page() {
               <a href={`mailto:${PROFILE.email}`} className="btn-secondary">
                 <Mail className="w-4 h-4 mr-2" /> Contact
               </a>
-              <a href={PROFILE.socials.linkedin} target="_blank" className="btn-secondary">
+              <a href={PROFILE.socials.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary">
                 <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
               </a>
-              <a href={PROFILE.socials.github} target="_blank" className="btn-secondary">
+              <a href={PROFILE.socials.github} target="_blank" rel="noopener noreferrer" className="btn-secondary">
                 <Github className="w-4 h-4 mr-2" /> GitHub
               </a>
             </motion.div>
@@ -383,16 +385,18 @@ export default function Page() {
           </div>
           <div className="flex flex-wrap gap-2">
             <a href={`mailto:${PROFILE.email}`} className="btn-primary"><Mail className="w-4 h-4 mr-2" /> Email me</a>
-            <a href={PROFILE.socials.linkedin} target="_blank" className="btn-secondary"><Linkedin className="w-4 h-4 mr-2" /> LinkedIn</a>
-            <a href={PROFILE.socials.github} target="_blank" className="btn-secondary"><Github className="w-4 h-4 mr-2" /> GitHub</a>
+            <a href={PROFILE.socials.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary"><Linkedin className="w-4 h-4 mr-2" /> LinkedIn</a>
+            <a href={PROFILE.socials.github} target="_blank" rel="noopener noreferrer" className="btn-secondary"><Github className="w-4 h-4 mr-2" /> GitHub</a>
           </div>
         </div>
         <div className="section-divider mt-10" />
-        <footer className="container py-8 text-sm text-white/60 flex items-center justify-between">
-          <span>© {new Date().getFullYear()} Emmanuel Darkwa</span>
-          <span>Built with Next.js • Deployed on Vercel</span>
-        </footer>
       </Section>
+      </main>
+
+      <footer className="container py-8 text-sm text-white/60 flex items-center justify-between">
+        <span>© {new Date().getFullYear()} Emmanuel Darkwa</span>
+        <span>Built with Next.js • Deployed on Vercel</span>
+      </footer>
     </div>
   );
 }
