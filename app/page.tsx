@@ -300,16 +300,22 @@ export default function Page() {
             {
               icon: ShieldAlert,
               title: 'PhishNet AI: Phishing Detection',
-              desc: 'Built a phishing detection engine with risk scoring designed from the ground up for non-technical users. Explainability was baked in from day one. Every flag comes with a plain-language reason, not just a score.',
-              tags: ['Security', 'Machine Learning', 'Explainability'],
-              links: [],
+              desc: 'Paste a suspicious message and get a risk score with the specific signals behind it. Rebuilt after finding that v1 parsed model output with a regex and left the score at its default of zero whenever that regex missed, rendering dangerous messages as a reassuring green. v2 constrains the model to a JSON schema, throws instead of defaulting, and recomputes the risk level from the score rather than trusting the model to keep them consistent. The API key now lives in a serverless function, after I found it hardcoded in the v1 frontend on a public repo. Also includes a password generator built to NIST SP 800-63B: entropy computed from the real wordlist, no forced composition rules.',
+              tags: ['Security', 'LLM Integration', 'Serverless', 'NIST SP 800-63B'],
+              links: [
+                { label: 'Try it live', href: 'https://phishnet-ai-v2.vercel.app' },
+                { label: 'View the code', href: 'https://github.com/edark3/phishnet-ai-v2' },
+              ],
             },
             {
               icon: Activity,
               title: 'Basketball Personnel Reporting Tool',
               desc: 'Full-stack scouting and roster strategy dashboard across four leagues (NBA, WNBA, NCAA M/W). Designed a team-strength model with era-adjusted weights (pre/post-NIL) and exponential recency decay to rank top programs over a 10-year window, plus an NIL valuation model estimating compensation for 1,000+ college players from performance metrics, conference strength, and playing time. Interactive Recharts visualizations analyze pre vs. post-NIL roster trends, with raw CSV data transformed at build time via PapaParse.',
               tags: ['Next.js', 'TypeScript', 'Data Modeling', 'Recharts', 'NIL Strategy'],
-              links: [],
+              links: [
+                { label: 'Try it live', href: 'https://basketball-piv-engine.vercel.app' },
+                { label: 'View the code', href: 'https://github.com/edark3/basketball-piv-engine' },
+              ],
             },
             {
               icon: Building2,
