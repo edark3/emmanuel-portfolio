@@ -188,7 +188,7 @@ export default function Page() {
               Ingest → model → serve. Contracts that don’t break, pipelines that self-heal, surfaces that drive action.
             </p>
             <div className="mt-4 flex flex-wrap gap-2">
-              {['Python','SQL/Postgres','dbt','Airflow/Prefect','APIs/Next.js','Power BI'].map(t=>(
+              {['Python','SQL/Postgres','REST APIs & OAuth 2.0','FTP/FTPS ingestion','pandas','Next.js','Power BI (DAX)'].map(t=>(
                 <span key={t} className="glass px-3 py-1.5 rounded-full text-xs">{t}</span>
               ))}
             </div>
