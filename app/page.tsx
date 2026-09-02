@@ -9,9 +9,9 @@ import { useState } from 'react';
 const PROFILE = {
   name: 'Emmanuel Darkwa',
   headline:
-    'I build data systems and the products they power. Pipelines, models, and the dashboards people actually make decisions with.',
+    'I build data systems and the products they power.',
   sub:
-    'Currently building data infrastructure inside a Division I athletics operation: automated ingestion across REST API and FTP sources, and the reporting leadership runs on. I\'ve also launched AI features and delivered analytics systems for a Fortune 500 company. I own problems end-to-end.',
+    'Pipelines, models, and the dashboards people actually make decisions with. Currently building data infrastructure inside a Division I athletics operation: automated ingestion across REST API and FTP sources, and the reporting leadership runs on. I\'ve also launched AI features and delivered analytics systems for a Fortune 500 client. I own problems end-to-end.',
   email: 'emmandark7@gmail.com',
   resume: '/Emmanuel_Darkwa_Resume.pdf',
   socials: {
@@ -149,9 +149,9 @@ export default function Page() {
 
             <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
-                ['Data Engineering', 'Pipelines, models, serve'],
+                ['Data Engineering', 'Ingestion, modeling, reporting'],
                 ['Health Data & Systems', 'FHIR, epi, privacy'],
-                ['Cybersecurity', 'Least privilege & audit'],
+                ['Cybersecurity', 'Least privilege, secrets handling'],
                 ['Product', 'PRDs, KPIs, experiments'],
               ].map(([label, sub], i) => (
                 <div key={i} className="glass p-4 rounded-2xl">
