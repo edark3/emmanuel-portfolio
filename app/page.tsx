@@ -2,16 +2,15 @@
 'use client';
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { ArrowRight, Download, Github, Linkedin, Mail, ExternalLink, Sparkles, TrendingUp, MessageSquare, BarChart2, ShieldAlert, Activity, Building2, Database, HeartPulse, Shield, Lightbulb, Menu, X, Workflow } from 'lucide-react';
-import { useState } from 'react';
+import {
+  Activity, BarChart2, Building2, Download, Github, Linkedin, Mail, Menu, MessageSquare,
+  Moon, Search, ShieldAlert, Sun, TrendingUp, Workflow, X,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 const PROFILE = {
   name: 'Emmanuel Darkwa',
-  headline:
-    'I build data systems and the products they power.',
-  sub:
-    'Pipelines, models, and the dashboards people actually make decisions with. Currently building data infrastructure inside a Division I athletics operation: automated ingestion across REST API and FTP sources, and the reporting leadership runs on. I\'ve also launched AI features and delivered analytics systems for a Fortune 500 client. I own problems end-to-end.',
+  headline: 'I build data systems and the products they power.',
   email: 'emmandark7@gmail.com',
   resume: '/Emmanuel_Darkwa_Resume.pdf',
   socials: {
@@ -20,69 +19,229 @@ const PROFILE = {
   },
 };
 
-const fade = {
-  hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-};
-
-const NAV_LINKS = [
-  ['About', 'about'],
+/* All six, including the two separate pages. Six links plus the name, the
+   theme toggle and the Resume button need about 780px, so the full bar only
+   appears at lg and the compact menu covers everything below it. */
+const NAV_LINKS: [string, string][] = [
   ['Work', 'work'],
   ['Projects', 'projects'],
+  ['About', 'about'],
   ['Certifications', 'certs'],
   ['LinkedIn', '/linkedin'],
   ['Creatives', '/creatives'],
-  ['Contact', 'contact'],
 ];
+
+/* ------------------------------------------------------------------ data */
+
+const FOCUS = [
+  {
+    title: 'Data engineering and platforms',
+    body: 'Ingest, model, serve. Contracts that do not break, pipelines that recover on their own, and surfaces that drive a decision rather than sit in a folder.',
+    tools: 'Python · SQL / Postgres · dbt · REST APIs & OAuth 2.0 · FTP/FTPS · pandas · Power BI',
+  },
+  {
+    title: 'Cybersecurity',
+    body: 'Security is an architecture decision, not a checklist at the end. Least-privilege access, auditable flows, explainable outputs, and secure defaults built in from day one.',
+    tools: 'Threat modeling · IAM · Audit trails · Secrets management · CompTIA Security+',
+  },
+  {
+    title: 'Product',
+    body: 'I own the problem, not the ticket. Discovery, metric, ship, iterate. I have written the PRDs, run the stakeholder reviews, and held the line on scope when it mattered.',
+    tools: 'PRDs · North-star metrics · Stakeholder alignment · SAFe POPM certified',
+  },
+  {
+    title: 'Health data and systems',
+    body: 'Applied analytics for public health and care delivery: surveillance, forecasting, cohorting, and FHIR/HL7 mapping with privacy designed in rather than bolted on.',
+    tools: 'Epidemiology · Time series · Clinical NLP · FHIR/HL7 · De-identification',
+  },
+];
+
+const PROJECTS = [
+  {
+    title: 'PhishNet AI',
+    icon: ShieldAlert,
+    tone: 'tone-teal',
+    body:
+      'Paste a suspicious message and get a risk score with the specific signals behind it. I rebuilt it after finding that v1 parsed model output with a regex and silently left the score at zero whenever that regex missed, rendering dangerous messages as a reassuring green. v2 constrains the model to a JSON schema, throws instead of defaulting, and recomputes the risk level from the score rather than trusting the model to keep them consistent. The API key now lives in a serverless function. It also includes a passphrase generator built to NIST SP 800-63B, with entropy computed from the real wordlist.',
+    tools: 'Gemini API · Serverless · NIST SP 800-63B',
+    links: [
+      { label: 'Try it live', href: 'https://phishnet-ai-v2.vercel.app' },
+      { label: 'Code', href: 'https://github.com/edark3/phishnet-ai-v2' },
+    ],
+  },
+  {
+    title: 'Basketball Personnel Reporting Tool',
+    icon: Activity,
+    tone: 'tone-orange',
+    body:
+      'A scouting and roster strategy dashboard across four leagues. A team-strength model with era-adjusted weights and exponential recency decay ranks programs over a ten-year window, and a valuation model estimates compensation for 1,000+ college players from performance, conference strength, and playing time.',
+    tools: 'Next.js · TypeScript · Recharts · Data modeling',
+    links: [
+      { label: 'Try it live', href: 'https://basketball-piv-engine.vercel.app' },
+      { label: 'Code', href: 'https://github.com/edark3/basketball-piv-engine' },
+    ],
+  },
+  {
+    title: 'Automated data pipeline, sports analytics integration',
+    icon: Workflow,
+    tone: 'tone-blue',
+    body:
+      'Replaced a manual multi-step download with automated Python pipelines pulling six data types across REST API and FTP channels. The API side uses OAuth 2.0 and parses 2,400+ session records. The FTP side filters a national data-sharing network from roughly 11,000 files (2.8 GB) down to the 110 that matter (23 MB), using MLSD batch listing to cut runtime.',
+    tools: 'Python · OAuth 2.0 · FTP/FTPS · pandas · ETL',
+    links: [],
+  },
+  {
+    title: 'Financial operations forecasting',
+    icon: TrendingUp,
+    tone: 'tone-orange',
+    body:
+      'Driver-based forecasting models and budget dashboards for a Division I athletics program. Historical actuals and forward-looking assumptions in one place, so leadership can scenario-plan live instead of waiting on a static spreadsheet.',
+    tools: 'Power BI · Financial modeling · SQL',
+    links: [{ label: 'Ask me about it', href: `mailto:${PROFILE.email}` }],
+  },
+  {
+    title: 'Postgame survey NLP pipeline',
+    icon: MessageSquare,
+    tone: 'tone-blue',
+    body:
+      'Automated the full lifecycle of postgame survey analysis: ingestion, cleaning, topic modeling, and sentiment scoring, delivered as tagged weekly summaries with no manual effort. Raw feedback became structured, actionable insight.',
+    tools: 'Python · NLP · Automation',
+    links: [],
+  },
+  {
+    title: 'Operational analytics dashboards',
+    icon: BarChart2,
+    tone: 'tone-orange',
+    body:
+      'Modeled KPIs end to end in dbt, wired them into a Power BI layer, and established a single source of truth across several systems. The measure of success was adoption: dashboards non-technical stakeholders actually kept using.',
+    tools: 'SQL · dbt · Power BI',
+    links: [],
+  },
+  {
+    title: 'NASA Space Apps Challenge, urban planning tool',
+    icon: Building2,
+    tone: 'tone-purple',
+    body:
+      'Backend architecture for a tool helping Chicago planners spot environmental and socioeconomic patterns. API endpoints, data processing, and AI-powered insight modules over population density, air quality, income, and weather data, built under hackathon time constraints.',
+    tools: 'Backend · APIs · Geospatial data',
+    links: [{ label: 'Code', href: 'https://github.com/edark3/chicago-urban-planning-tool' }],
+  },
+  {
+    title: 'Consumer product industry project',
+    icon: Search,
+    tone: 'tone-red',
+    body:
+      'Data workflows, product framing, and an AI search feature for a Fortune 500 company, letting internal users query across company data conversationally. Details are under NDA, but I am happy to walk through the approach.',
+    tools: 'Product · Data engineering · AI integration',
+    links: [],
+  },
+];
+
+const CERTS = [
+  { name: 'Certificate in Cybersecurity, Information Trust Institute, UIUC', status: 'Completed, Aug 2026', img: '/certs/iti_cyber.jpg' },
+  { name: 'SAFe Product Owner / Product Manager', status: 'Completed', img: '/certs/safepopm.png' },
+  { name: 'Cisco: Introduction to Cybersecurity', status: 'Completed', img: '/certs/ciscocyb.png' },
+  { name: 'CompTIA Security+ (SY0-701)', status: 'In progress', img: '/certs/comptia.png' },
+  { name: 'AWS Cloud Practitioner', status: 'In progress', img: '/certs/aws.jpeg' },
+];
+
+const BEYOND = [
+  ['Sports', 'Lifelong hooper. The basketball tool exists because I care about the game, not only the data.'],
+  ['Training', 'Certified personal trainer. Consistency is a system, not a mood. Same philosophy I bring to engineering.'],
+  ['Creating', 'Content at the intersection of sports, tech, fashion, and hoops culture.'],
+  ['Gear', 'I test gadgets and care about the last ten percent of the experience, the part most people skip.'],
+];
+
+/* --------------------------------------------------------------- pieces */
+
+/*
+ * Light is the default and the stored choice wins over the OS setting, which
+ * is why the inline script in layout.tsx stamps data-theme before paint. This
+ * component only reads what is already on <html>, so it never disagrees with
+ * what the visitor is looking at.
+ */
+function ThemeToggle() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    const current = document.documentElement.getAttribute('data-theme');
+    setTheme(current === 'dark' ? 'dark' : 'light');
+  }, []);
+
+  function toggle() {
+    const next = theme === 'dark' ? 'light' : 'dark';
+    setTheme(next);
+    document.documentElement.setAttribute('data-theme', next);
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      /* private browsing: the choice just does not persist */
+    }
+  }
+
+  return (
+    <button
+      onClick={toggle}
+      aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
+      className="p-2 rounded-full muted hover:text-ink transition"
+    >
+      {theme === 'dark' ? <Sun className="w-[18px] h-[18px]" /> : <Moon className="w-[18px] h-[18px]" />}
+    </button>
+  );
+}
 
 function Nav() {
   const [open, setOpen] = useState(false);
   return (
-    <nav aria-label="Main" className="fixed top-0 inset-x-0 z-50 bg-[#0E0B14]/60 backdrop-blur-md">
-      <div className="container h-14 flex items-center justify-between">
-        <a href="#home" className="text-white/90 hover:text-white font-medium">
-          Emmanuel Darkwa
-        </a>
-        {/* Desktop */}
-        <div className="hidden sm:flex items-center gap-2">
+    // Opaque, not translucent: a sticky bar over running text has to hide what
+    // passes under it, and a blur alone leaves headings ghosting through.
+    <nav aria-label="Main" className="sticky top-0 z-50" style={{ background: 'var(--paper)' }}>
+      <div className="container h-14 flex items-center justify-between gap-6">
+        <a href="#home" className="font-medium whitespace-nowrap">{PROFILE.name}</a>
+
+        <div className="hidden lg:flex items-center gap-1">
           {NAV_LINKS.map(([label, id]) => (
             <a
               key={id}
               href={id.startsWith('/') ? id : `#${id}`}
-              className="px-3 py-1 rounded-full text-white/75 hover:text-white hover:bg-white/10 text-sm"
+              className="px-2.5 py-1 rounded-md text-sm muted hover:text-ink transition"
             >
               {label}
             </a>
           ))}
-          <a href="/resume" className="btn-primary ml-2">
-            <Download className="w-4 h-4 mr-1" /> Resume
+          <ThemeToggle />
+          <a href="/resume" className="btn-primary ml-1">
+            <Download className="w-4 h-4 mr-1.5" /> Resume
           </a>
         </div>
-        {/* Mobile hamburger */}
-        <button
-          className="sm:hidden p-2 text-white/80 hover:text-white"
-          onClick={() => setOpen(!open)}
-          aria-label="Toggle menu"
-        >
-          {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-        </button>
+
+        <div className="lg:hidden flex items-center gap-1">
+          <ThemeToggle />
+          <button
+            className="p-2 muted"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+            aria-expanded={open}
+          >
+            {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
-      <div className="section-divider" />
-      {/* Mobile menu */}
+
       {open && (
-        <div className="sm:hidden bg-[#0E0B14]/95 backdrop-blur-md px-4 pb-4 flex flex-col gap-1">
+        <div className="lg:hidden px-5 pb-4 flex flex-col gap-1" style={{ background: 'var(--paper)' }}>
           {NAV_LINKS.map(([label, id]) => (
             <a
               key={id}
               href={id.startsWith('/') ? id : `#${id}`}
               onClick={() => setOpen(false)}
-              className="px-3 py-2.5 rounded-lg text-white/75 hover:text-white hover:bg-white/10 text-sm"
+              className="px-2 py-2.5 rounded-md text-sm muted hover:text-ink"
             >
               {label}
             </a>
           ))}
-          <a href="/resume" onClick={() => setOpen(false)} className="btn-primary mt-2 w-full justify-center">
-            <Download className="w-4 h-4 mr-1" /> Resume
+          <a href="/resume" onClick={() => setOpen(false)} className="btn-primary mt-2 w-full">
+            <Download className="w-4 h-4 mr-1.5" /> Resume
           </a>
         </div>
       )}
@@ -90,312 +249,200 @@ function Nav() {
   );
 }
 
-function Section({ id, title, children }: { id: string; title?: string; children: React.ReactNode }) {
+function Section({ id, title, children }: { id: string; title: string; children: React.ReactNode }) {
   return (
-    <section id={id} className="py-16 sm:py-20 scroll-mt-24">
-      <div className="container">
-        {title && (
-          <div className="mb-6 flex items-center gap-4">
-            <h2 className="text-2xl sm:text-3xl font-semibold">{title}</h2>
-            <div className="flex-1 section-divider" />
-          </div>
-        )}
-        {children}
-      </div>
+    <section id={id} className="py-20 sm:py-28 scroll-mt-20">
+      <h2 className="section-title mb-10 sm:mb-14 text-center">{title}</h2>
+      {children}
     </section>
   );
 }
 
+/* ----------------------------------------------------------------- page */
+
 export default function Page() {
   return (
     <div className="min-h-screen">
-      <div className="hero-bg" aria-hidden="true" />
       <a href="#main" className="skip-link">Skip to main content</a>
       <Nav />
 
-      <main id="main">
-      {/* HERO */}
-      <section id="home" className="pt-24 sm:pt-28 pb-8">
-        <div className="container grid md:grid-cols-[1.1fr,0.9fr] gap-12 items-center">
-          <div>
-            <motion.p variants={fade} initial="hidden" animate="show" className="kicker">
-              B.S. Information Sciences · Minors in CS, Health Technology & Cybersecurity · UIUC · 2026
-            </motion.p>
-            <motion.h1 variants={fade} initial="hidden" animate="show" className="display mt-2">
-              {PROFILE.headline}
-            </motion.h1>
-            <motion.p
-              variants={fade}
-              initial="hidden"
-              animate="show"
-              className="mt-4 text-white/70 text-lg max-w-2xl"
-            >
-              {PROFILE.sub}
-            </motion.p>
-            <motion.div variants={fade} initial="hidden" animate="show" className="mt-6 flex flex-wrap gap-2">
-              <a href="#projects" className="btn-primary">
-                See work <ArrowRight className="w-4 h-4 ml-1" />
-              </a>
-              <a href={`mailto:${PROFILE.email}`} className="btn-secondary">
-                <Mail className="w-4 h-4 mr-2" /> Contact
-              </a>
-              <a href={PROFILE.socials.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
-              </a>
-              <a href={PROFILE.socials.github} target="_blank" rel="noopener noreferrer" className="btn-secondary">
-                <Github className="w-4 h-4 mr-2" /> GitHub
-              </a>
-            </motion.div>
+      <main id="main" className="container">
+        {/* HERO */}
+        <section id="home" className="relative pt-20 sm:pt-28 pb-10 text-center">
+          <div className="hero-bg" aria-hidden="true" />
+          <p className="rise kicker">
+            Data · Product · Security
+          </p>
 
-            <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-3">
-              {[
-                ['Data Engineering', 'Ingestion, modeling, reporting'],
-                ['Health Data & Systems', 'FHIR, epi, privacy'],
-                ['Cybersecurity', 'Least privilege, secrets handling'],
-                ['Product', 'PRDs, KPIs, experiments'],
-              ].map(([label, sub], i) => (
-                <div key={i} className="glass p-4 rounded-2xl">
-                  <div className="flex items-center gap-2 text-sm">
-                    <span className="block flex-shrink-0 h-2 w-2 rounded-full bg-white/70" />
-                    <span className="font-medium">{label}</span>
-                  </div>
-                  <div className="text-xs text-white/60 mt-1">{sub}</div>
-                </div>
-              ))}
-            </div>
+          <h1 className="rise display mt-5 mx-auto max-w-[20ch]">
+            {PROFILE.headline}
+          </h1>
+
+          <div className="rise measure mx-auto mt-7 space-y-5">
+            <p className="lede">
+              I am a data analyst at University of Illinois Athletics, building the pipelines,
+              models, and dashboards people actually make decisions with.
+            </p>
+            <p className="muted leading-relaxed">
+              I have also launched AI features and delivered analytics systems for a Fortune 500
+              client. I own problems end to end, which usually means I am still the one building.
+            </p>
           </div>
 
-          <motion.div initial={{ opacity: 0, scale: .98 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: .6 }}>
-            <div className="panel p-2">
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[18px]">
-                <Image src="/headshot-old.jpg" alt="Emmanuel Darkwa" fill className="object-cover object-top" priority />
+          <div className="rise mt-9 flex flex-wrap gap-3 justify-center">
+            <a href="#projects" className="btn-primary">See the work</a>
+            <a href={`mailto:${PROFILE.email}`} className="btn-secondary">
+              <Mail className="w-4 h-4 mr-2" /> Email
+            </a>
+            <a href={PROFILE.socials.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary">
+              <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
+            </a>
+            <a href={PROFILE.socials.github} target="_blank" rel="noopener noreferrer" className="btn-secondary">
+              <Github className="w-4 h-4 mr-2" /> GitHub
+            </a>
+          </div>
+
+          <figure className="mt-16 max-w-sm mx-auto">
+            <div className="panel relative aspect-[4/5] w-full overflow-hidden">
+              <Image
+                src="/headshot-hero.jpg"
+                alt="Emmanuel Darkwa"
+                fill
+                sizes="(max-width: 640px) 100vw, 384px"
+                className="object-cover"
+                priority
+              />
+            </div>
+            <figcaption className="faint mt-4">
+              B.S. Information Sciences, University of Illinois Urbana-Champaign. Minors in computer
+              science, cybersecurity, and health technology.
+            </figcaption>
+          </figure>
+        </section>
+
+        {/* FOCUS */}
+        <Section id="work" title="What I work on">
+          <div className="space-y-14 measure mx-auto">
+            {FOCUS.map((f) => (
+              <div key={f.title}>
+                <h3 className="entry-title">{f.title}</h3>
+                <p className="muted leading-relaxed mt-3">{f.body}</p>
+                <p className="tools mt-4">{f.tools}</p>
               </div>
-              <div className="absolute bottom-3 right-3 glass px-3 py-2 rounded-full text-sm inline-flex items-center">
-                <Sparkles className="w-4 h-4 mr-1" /> Always building
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* FOCUS */}
-      <Section id="work" title="Focus Areas">
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="panel p-8">
-            <Database className="w-6 h-6 mb-3 text-white/60" />
-            <h3 className="text-2xl font-semibold">Data engineering & platforms</h3>
-            <p className="text-white/70 mt-2">
-              Ingest → model → serve. Contracts that don’t break, pipelines that self-heal, surfaces that drive action.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {['Python','SQL/Postgres','dbt','REST APIs & OAuth 2.0','FTP/FTPS ingestion','pandas','Next.js','Power BI (DAX)'].map(t=>(
-                <span key={t} className="glass px-3 py-1.5 rounded-full text-xs">{t}</span>
-              ))}
-            </div>
+            ))}
           </div>
+        </Section>
 
-          <div className="panel p-8">
-            <HeartPulse className="w-6 h-6 mb-3 text-white/60" />
-            <h3 className="text-2xl font-semibold">Health data & systems</h3>
-            <p className="text-white/70 mt-2">
-              Applied analytics for public health & care delivery: surveillance, forecasting, cohorting, and FHIR/HL7 mapping with privacy by design.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {['Epidemiology','Time-series','NLP (clinical/social)','FHIR/HL7','De-identification'].map(t=>(
-                <span key={t} className="glass px-3 py-1.5 rounded-full text-xs">{t}</span>
-              ))}
-            </div>
-          </div>
-
-          <div className="panel p-8">
-            <Shield className="w-6 h-6 mb-3 text-white/60" />
-            <h3 className="text-2xl font-semibold">Cybersecurity by design</h3>
-            <p className="text-white/70 mt-2">
-              Security isn't a checklist. It's an architecture decision. Least-privilege IAM, auditable flows, explainable outputs, and secure defaults built into the product from day one.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {['Threat modeling','IAM / least privilege','Audit trails','Secrets management','CompTIA Sec+'].map(t=>(
-                <span key={t} className="glass px-3 py-1.5 rounded-full text-xs">{t}</span>
-              ))}
-            </div>
-          </div>
-
-          <div className="panel p-8">
-            <Lightbulb className="w-6 h-6 mb-3 text-white/60" />
-            <h3 className="text-2xl font-semibold">Product mindset</h3>
-            <p className="text-white/70 mt-2">
-              I own the problem, not just the ticket. Discovery → metric → ship → iterate. I've written PRDs, run stakeholder reviews, and held the line on scope when it mattered.
-            </p>
-            <div className="mt-4 flex flex-wrap gap-2">
-              {['PRDs & requirements','North-star metrics','Stakeholder alignment','SAFe® POPM certified'].map(t=>(
-                <span key={t} className="glass px-3 py-1.5 rounded-full text-xs">{t}</span>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      {/* CERTS PREVIEW */}
-      <Section id="certs" title="Certifications">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {[
-            { name: 'Certificate in Cybersecurity — Information Trust Institute, UIUC', status: 'Completed • Aug 2026', img: '/certs/iti_cyber.png', bar: 100 },
-            { name: 'SAFe® POPM (Product Owner / Product Manager)', status: 'Completed', img: '/certs/safepopm.png', bar: 100 },
-            { name: 'Cisco: Introduction to Cybersecurity', status: 'Completed', img: '/certs/ciscocyb.png', bar: 100 },
-            { name: 'CompTIA Security+ (SY0-701)', status: 'In Progress • 80%', img: '/certs/comptia.png', bar: 80 },
-            { name: 'AWS Cloud Practitioner', status: 'In Progress • 80%', img: '/certs/aws.jpeg', bar: 80 },
-          ].map((c,i)=> (
-            <div key={i} className="panel overflow-hidden">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={c.img} alt={c.name} className="w-full h-auto" />
-              <div className="p-4">
-                <div className="font-semibold">{c.name}</div>
-                <div className="text-white/70 text-sm">{c.status}</div>
-                <div className="mt-3 h-2 rounded-full bg-white/10 overflow-hidden">
-                  <div className="h-2 rounded-full" style={{ width: `${c.bar}%`, background: 'linear-gradient(90deg, #a855f7, #4f46e5)' }} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* PROJECTS */}
-      <Section id="projects" title="Projects">
-        <div className="grid md:grid-cols-2 gap-6">
-          {[
-            {
-              icon: Workflow,
-              title: 'Automated Data Pipeline (Sports Analytics Integration)',
-              desc: 'Built automated Python pipelines that replaced a manual multi-step download process, extracting six data types from a third-party sports analytics platform across both REST API and FTP channels. Integrated the REST API via OAuth 2.0 and parsed 2,400+ session records into pandas DataFrames. Engineered an FTP workflow that filtered a national data-sharing network from ~11,000 files (2.8 GB) down to 110 relevant files (23 MB), cutting extraction time with MLSD batch listing. Secured all credentials and private athlete data with environment variables and gitignore policies.',
-              tags: ['Python', 'REST APIs', 'OAuth 2.0', 'FTP', 'pandas', 'ETL'],
-              links: [],
-            },
-            {
-              icon: TrendingUp,
-              title: 'Financial Operations Forecasting',
-              desc: 'Built driver-based forecasting models and budget dashboards for a Division I athletics program. Unified historical actuals with forward-looking assumptions so leadership could scenario-plan in real time instead of waiting on static spreadsheets.',
-              tags: ['Data Engineering', 'Power BI', 'Financial Modeling'],
-              links: [{ label: 'Want to know more? Get in touch', href: `mailto:${PROFILE.email}` }],
-            },
-            {
-              icon: MessageSquare,
-              title: 'Postgame Survey NLP Pipeline',
-              desc: 'Automated the full lifecycle of postgame survey analysis: ingestion, cleaning, topic modeling, and sentiment scoring. Delivered tagged weekly summaries to leadership with zero manual effort. Raw athlete feedback became structured, actionable insight.',
-              tags: ['Python', 'NLP', 'Automation'],
-              links: [],
-            },
-            {
-              icon: BarChart2,
-              title: 'Operational Analytics Dashboards',
-              desc: 'Modeled KPIs end-to-end in dbt, wired them into a Power BI layer, and established a single source of truth across multiple data sources. Delivered dashboards that non-technical stakeholders actually adopted, not just opened once.',
-              tags: ['SQL', 'dbt', 'Power BI'],
-              links: [],
-            },
-            {
-              icon: Workflow,
-              title: 'NASA Space Apps Challenge: The Urban Planning Initiative',
-              desc: 'Designed the backend architecture for a tool helping Chicago city planners identify environmental and socioeconomic patterns. Built API endpoints, data processing pipelines, and AI-powered insight modules supporting real-time analysis of population density, air quality, income, and weather data. Integrated geospatial and statistical datasets from multiple sources, delivered under hackathon time constraints on a multidisciplinary team.',
-              tags: ['Backend', 'APIs', 'Geospatial Data', 'AI'],
-              links: [{ label: 'View the code', href: 'https://github.com/edark3/chicago-urban-planning-tool' }],
-            },
-            {
-              icon: ShieldAlert,
-              title: 'PhishNet AI: Phishing Detection',
-              desc: 'Paste a suspicious message and get a risk score with the specific signals behind it. Rebuilt after finding that v1 parsed model output with a regex and left the score at its default of zero whenever that regex missed, rendering dangerous messages as a reassuring green. v2 constrains the model to a JSON schema, throws instead of defaulting, and recomputes the risk level from the score rather than trusting the model to keep them consistent. The API key now lives in a serverless function, after I found it hardcoded in the v1 frontend on a public repo. Also includes a password generator built to NIST SP 800-63B: entropy computed from the real wordlist, no forced composition rules.',
-              tags: ['Security', 'LLM Integration', 'Serverless', 'NIST SP 800-63B'],
-              links: [
-                { label: 'Try it live', href: 'https://phishnet-ai-v2.vercel.app' },
-                { label: 'View the code', href: 'https://github.com/edark3/phishnet-ai-v2' },
-              ],
-            },
-            {
-              icon: Activity,
-              title: 'Basketball Personnel Reporting Tool',
-              desc: 'Full-stack scouting and roster strategy dashboard across four leagues (NBA, WNBA, NCAA M/W). Designed a team-strength model with era-adjusted weights (pre/post-NIL) and exponential recency decay to rank top programs over a 10-year window, plus an NIL valuation model estimating compensation for 1,000+ college players from performance metrics, conference strength, and playing time. Interactive Recharts visualizations analyze pre vs. post-NIL roster trends, with raw CSV data transformed at build time via PapaParse.',
-              tags: ['Next.js', 'TypeScript', 'Data Modeling', 'Recharts', 'NIL Strategy'],
-              links: [
-                { label: 'Try it live', href: 'https://basketball-piv-engine.vercel.app' },
-                { label: 'View the code', href: 'https://github.com/edark3/basketball-piv-engine' },
-              ],
-            },
-            {
-              icon: Building2,
-              title: 'Consumer Product Industry Project',
-              desc: 'Delivered data workflows, product framing, and AI-powered search for a Fortune 500 company operating at scale. Built and integrated an AI search feature that let internal users query across company data conversationally. Details are under NDA. Happy to walk through the approach in an interview.',
-              tags: ['Product', 'Data Engineering', 'AI Integration', 'Fortune 500'],
-              links: [],
-            },
-          ].map((p,i)=>(
-            <div key={i} className="panel p-5 hover:bg-white/5 transition">
-              <p.icon className="w-5 h-5 mb-2 text-white/50" />
-              <div className="flex items-center justify-between mb-1">
-                <h3 className="font-semibold text-lg">{p.title}</h3>
+        {/* PROJECTS */}
+        <Section id="projects" title="Selected work">
+          <div className="space-y-6">
+            {PROJECTS.map((p, i) => (
+              <article key={p.title} className={`${i % 2 === 1 ? 'card-invert' : 'panel'} ${p.tone} p-7 sm:p-9`}>
+                <p.icon aria-hidden="true" strokeWidth={1.75} className="w-7 h-7 mb-4" style={{ color: 'var(--tone)' }} />
+                <h3 className="entry-title">{p.title}</h3>
+                <p className="muted leading-relaxed mt-3 measure">{p.body}</p>
+                <p className="tools mt-4">{p.tools}</p>
                 {p.links.length > 0 && (
-                  <div className="flex items-center gap-3 text-sm">
-                    {p.links.map((lnk, idx) => (
-                      <a key={idx} className="text-white/80 hover:text-white inline-flex items-center" href={lnk.href}>
-                        <ExternalLink className="w-4 h-4 mr-1" />{lnk.label}
+                  <div className="mt-4 flex flex-wrap gap-4 text-sm">
+                    {p.links.map((l) => (
+                      <a
+                        key={l.href}
+                        href={l.href}
+                        target={l.href.startsWith('http') ? '_blank' : undefined}
+                        rel={l.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                        className="link-accent"
+                      >
+                        {l.label} →
                       </a>
                     ))}
                   </div>
                 )}
-              </div>
-              <p className="text-white/70 text-sm mb-3">{p.desc}</p>
-              <div className="flex flex-wrap gap-2">
-                {p.tags.map(t=>(<span key={t} className="glass px-2.5 py-1 rounded-full text-xs">{t}</span>))}
-              </div>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* ABOUT */}
-      <Section id="about" title="About">
-        <div className="panel p-6 prose prose-invert max-w-none">
-          <p>I’m a product manager and data engineer from the University of Illinois. I define what to build, ship it, and measure whether it worked. Most PMs hand off to engineering. I stay in the room because I can do the work.</p>
-          <p>I’ve shipped AI features for a Fortune 500 company, built financial forecasting tools for Division I athletics, and delivered analytics systems that non-technical leaders actually use. My background spans data engineering, health informatics, and cybersecurity — which means I ask better questions and catch problems earlier.</p>
-          <p>I believe the best products come from people who understand the data underneath them. That’s the edge I bring.</p>
-        </div>
-      </Section>
-
-      {/* BEYOND */}
-      <Section id="beyond" title="Beyond the work">
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {[
-            { label: 'Sports', body: 'Lifelong hooper and sports obsessive. The basketball tool exists because I actually care about the game, not just the data.' },
-            { label: 'Personal trainer', body: 'Certified personal trainer. Consistency is a system, not a mood. Same philosophy I bring to engineering.' },
-            { label: 'Content creator', body: 'I make content at the intersection of sports, tech, fashion, and hoops culture. Storytelling is a skill I use on both sides.' },
-            { label: 'Tech & gear', body: 'Gear head. I test gadgets and care deeply about the last 10% of the user experience, the part most people skip.' },
-          ].map((item, i) => (
-            <div key={i} className="panel p-5">
-              <div className="font-semibold mb-1">{item.label}</div>
-              <p className="text-white/70 text-sm">{item.body}</p>
-            </div>
-          ))}
-        </div>
-      </Section>
-
-      {/* CONTACT */}
-      <Section id="contact" title="Contact">
-        <div className="panel p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <div className="text-lg font-medium">Let’s connect.</div>
-            <div className="text-white/70">Currently working full-time. Always open to interesting conversations, collabs, and ideas.</div>
+              </article>
+            ))}
           </div>
-          <div className="flex flex-wrap gap-2">
-            <a href={`mailto:${PROFILE.email}`} className="btn-primary"><Mail className="w-4 h-4 mr-2" /> Email me</a>
-            <a href={PROFILE.socials.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary"><Linkedin className="w-4 h-4 mr-2" /> LinkedIn</a>
-            <a href={PROFILE.socials.github} target="_blank" rel="noopener noreferrer" className="btn-secondary"><Github className="w-4 h-4 mr-2" /> GitHub</a>
+        </Section>
+
+        {/* ABOUT */}
+        <Section id="about" title="About">
+          <div className="measure mx-auto space-y-5">
+            <p className="muted leading-relaxed">
+              I have been a builder since I was a kid. I was the Lego kid, dumping the whole bin
+              out and building something that was not on the box. That never really left me, it
+              just turned into software.
+            </p>
+            <p className="muted leading-relaxed">
+              I am a product manager and data engineer out of the University of Illinois. I define
+              what to build, ship it, and measure whether it worked. Most PMs hand off to
+              engineering. I stay in the room because I can do the work.
+            </p>
+            <p className="muted leading-relaxed">
+              My background spans data engineering, health informatics, and cybersecurity, which
+              means I ask better questions early and catch the problems that surface late.
+            </p>
+            <p className="muted leading-relaxed">
+              The best products come from people who understand the data underneath them. That is
+              the edge I bring.
+            </p>
           </div>
-        </div>
-        <div className="section-divider mt-10" />
-      </Section>
+        </Section>
+
+        {/* CERTS */}
+        <Section id="certs" title="Certifications">
+          <ul className="space-y-5 measure mx-auto">
+            {CERTS.map((c) => (
+              <li key={c.name} className="flex items-baseline justify-between gap-6">
+                <span>{c.name}</span>
+                <span className="faint whitespace-nowrap">{c.status}</span>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-5">
+            {CERTS.map((c) => (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img key={c.img} src={c.img} alt={c.name} loading="lazy" decoding="async" className="panel w-full h-auto" />
+            ))}
+          </div>
+        </Section>
+
+        {/* BEYOND */}
+        <Section id="beyond" title="Beyond the work">
+          <dl className="space-y-8 measure mx-auto">
+            {BEYOND.map(([label, body]) => (
+              <div key={label}>
+                <dt className="font-medium">{label}</dt>
+                <dd className="muted leading-relaxed mt-1">{body}</dd>
+              </div>
+            ))}
+          </dl>
+        </Section>
+
+        {/* CONTACT */}
+        <Section id="contact" title="Get in touch">
+          <p className="lede measure mx-auto text-center">
+            Currently working full time. Always open to interesting conversations, collaborations,
+            and ideas.
+          </p>
+          <div className="mt-8 flex flex-wrap gap-3 justify-center">
+            <a href={`mailto:${PROFILE.email}`} className="btn-primary">
+              <Mail className="w-4 h-4 mr-2" /> Email me
+            </a>
+            <a href={PROFILE.socials.linkedin} target="_blank" rel="noopener noreferrer" className="btn-secondary">
+              <Linkedin className="w-4 h-4 mr-2" /> LinkedIn
+            </a>
+            <a href={PROFILE.socials.github} target="_blank" rel="noopener noreferrer" className="btn-secondary">
+              <Github className="w-4 h-4 mr-2" /> GitHub
+            </a>
+          </div>
+        </Section>
       </main>
 
-      <footer className="container py-8 text-sm text-white/60 flex items-center justify-between">
+      <footer className="container py-10 faint flex flex-wrap items-center justify-between gap-3">
         <span>© {new Date().getFullYear()} Emmanuel Darkwa</span>
-        <span>Built with Next.js • Deployed on Vercel</span>
+        <span className="flex items-center gap-4">
+          <a href="/linkedin" className="link-accent">LinkedIn highlights</a>
+          <a href="/creatives" className="link-accent">Creatives</a>
+        </span>
       </footer>
     </div>
   );

@@ -3,46 +3,244 @@
 @tailwind components;
 @tailwind utilities;
 
-:root { color-scheme: dark; }
-html, body { height: 100%; }
-body {
-  @apply bg-[color:var(--aura-bg,#0E0B14)] text-white antialiased;
+/* ---------------------------------------------------------------- tokens
+ *
+ * Light-first palette. Low saturation on purpose: this page is mostly text,
+ * and a saturated background fights the reading.
+ *
+ * --fg-rgb is the one the Tailwind config reads. Every legacy `text-white/70`
+ * / `bg-white/10` / `border-white/10` in the codebase resolves through it, so
+ * those utilities keep meaning the same thing (foreground at N% opacity)
+ * instead of turning invisible on a light background.
+ */
+:root {
+  color-scheme: light;
+
+  --paper:    #FBFBFD;
+  --surface:  #FFFFFF;
+  --ink:      #1D1D1F;
+  --ink-2:    #33333A;   /* body copy: near-black, not grey */
+  --ink-3:    #6E6E73;   /* captions, tool lists, timestamps */
+  --rule:     #D2D2D7;
+  --accent:   #0066CC;
+  --accent-soft: rgba(0, 102, 204, 0.08);
+  --shadow:   0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+
+  --fg-rgb: 29 29 31;
+
+  /* An inverted card flips against whatever the page currently is: a black
+     tile on the white theme, a white tile on the black one. Children inherit
+     these because .card-invert redefines --ink / --ink-2 / --accent locally,
+     so .muted, .tools and .link-accent all recolour without extra classes. */
+  --invert-bg:     #1D1D1F;
+  --invert-ink:    #F5F5F7;
+  --invert-ink-2:  #F0F0F2;
+  --invert-ink-3:  #A1A1A6;
+  --invert-accent: #2997FF;
+
+  /* One family, the way Apple does it. Scale and weight carry the hierarchy
+     instead of a second typeface. Inter is the closest free stand-in for SF. */
+  --font-display: var(--font-sans), -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+  --font-body: var(--font-sans), -apple-system, BlinkMacSystemFont, 'SF Pro Text', sans-serif;
 }
 
-/* Container */
-.container { @apply max-w-6xl mx-auto px-4; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
 
-/* Hero background - macOS style waves */
+    --paper:    #000000;
+    --surface:  #1D1D1F;
+    --ink:      #F5F5F7;
+    --ink-2:    #E4E4E9;
+    --ink-3:    #A1A1A6;
+    --rule:     #2C2C2E;
+    --accent:   #2997FF;
+    --accent-soft: rgba(41, 151, 255, 0.12);
+    --shadow:   0 4px 24px rgba(0, 0, 0, 0.5);
+
+      --fg-rgb: 245 245 247;
+
+    --invert-bg:     #F5F5F7;
+    --invert-ink:    #1D1D1F;
+    --invert-ink-2:  #33333A;
+    --invert-ink-3:  #6E6E73;
+    --invert-accent: #0066CC;
+  }
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --paper:    #000000;
+  --surface:  #1D1D1F;
+  --ink:      #F5F5F7;
+  --ink-2:    #E4E4E9;
+  --ink-3:    #A1A1A6;
+  --rule:     #2C2C2E;
+  --accent:   #2997FF;
+  --accent-soft: rgba(41, 151, 255, 0.12);
+  --shadow:   0 4px 24px rgba(0, 0, 0, 0.5);
+
+  --fg-rgb: 245 245 247;
+
+  --invert-bg:     #F5F5F7;
+  --invert-ink:    #1D1D1F;
+  --invert-ink-2:  #33333A;
+  --invert-ink-3:  #6E6E73;
+  --invert-accent: #0066CC;
+}
+
+html, body { height: 100%; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ------------------------------------------------------------- structure
+ *
+ * Two widths, deliberately. `.container` holds the page furniture (nav,
+ * footer). `.measure` caps running text at roughly 70 characters, which is
+ * the whole reason the old grid-of-cards layout was hard to read.
+ */
+.container { @apply max-w-4xl mx-auto px-6; }
+.measure   { @apply max-w-[34rem]; }
+
+/* Kept so existing markup does not break. The old fixed gradient wash is
+   gone; a flat ground is calmer and lets the type carry the page. */
+/* A faint wash behind the hero, the way a product page glows behind the
+   device. Nearly invisible on purpose: the old version was a saturated
+   purple field competing with the text. */
 .hero-bg {
-  position: fixed;
-  inset: 0;
-  background: radial-gradient(1200px 800px at 80% -10%, rgba(155,92,255,0.25), transparent),
-              radial-gradient(1000px 700px at -10% 80%, rgba(91,124,255,0.25), transparent),
-              radial-gradient(800px 600px at 110% 80%, rgba(255,255,255,0.06), transparent),
-              linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
-  filter: saturate(110%);
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 620px;
+  pointer-events: none;
+  background:
+    radial-gradient(900px 420px at 50% -8%, var(--accent-soft), transparent 70%);
   z-index: -1;
 }
 
-/* Panels & glass */
-.panel { @apply relative rounded-2xl bg-white/5 shadow-soft border border-white/10; }
-.glass { @apply bg-white/10 border border-white/10 backdrop-blur-xs; }
+/* ------------------------------------------------------------------ tones
+ *
+ * One accent colour per project, Apple-store style: the card stays plain and
+ * the title carries the colour. Each tone ships two values because the same
+ * card is black in the light theme and white in the dark one, so the colour
+ * has to swap with the background it lands on, not with the page.
+ *
+ * Every pairing below clears 3:1 on its own background, which is the AA bar
+ * for text this size.
+ */
+.tone-blue   { --tone-on-light: #0057B8; --tone-on-dark: #2997FF; }
+.tone-orange { --tone-on-light: #B23A0C; --tone-on-dark: #FF8A5B; }
+.tone-red    { --tone-on-light: #B3261E; --tone-on-dark: #FF6B6B; }
+.tone-green  { --tone-on-light: #146B32; --tone-on-dark: #3FD26A; }
+.tone-purple { --tone-on-light: #6B26B8; --tone-on-dark: #C79BFF; }
+.tone-teal   { --tone-on-light: #0B6B76; --tone-on-dark: #5AD1E0; }
 
-/* Buttons */
+/* which of the two applies depends on the card, not the page */
+.panel       { --tone: var(--tone-on-light); }
+.card-invert { --tone: var(--tone-on-dark); }
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .panel       { --tone: var(--tone-on-dark); }
+  :root:not([data-theme='light']) .card-invert { --tone: var(--tone-on-light); }
+}
+:root[data-theme='dark'] .panel       { --tone: var(--tone-on-dark); }
+:root[data-theme='dark'] .card-invert { --tone: var(--tone-on-light); }
+
+/* falls back to plain ink anywhere no tone is set */
+.entry-title { color: var(--tone, var(--ink)); }
+
+/* ---------------------------------------------------------------- blocks */
+
+.panel {
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  @apply relative rounded-[18px];
+}
+
+.card-invert {
+  background: var(--invert-bg);
+  --ink: var(--invert-ink);
+  --ink-2: var(--invert-ink-2);
+  --ink-3: var(--invert-ink-3);
+  --accent: var(--invert-accent);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  @apply relative rounded-[18px];
+}
+
+.glass {
+  background: var(--accent-soft);
+  @apply rounded-full;
+}
+
+.section-divider { background: var(--rule); @apply h-px w-full; }
+
+/* ---------------------------------------------------------------- buttons */
+
 .btn-primary {
-  @apply inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium
-         bg-gradient-to-r from-aura-purple to-aura-blue text-white hover:opacity-95 transition;
+  background: var(--accent);
+  color: var(--paper);
+  @apply inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-medium transition;
 }
+.btn-primary:hover { filter: brightness(1.1); }
+
 .btn-secondary {
-  @apply inline-flex items-center justify-center px-4 py-2 rounded-full text-sm font-medium
-         bg-white/10 hover:bg-white/15 border border-white/10;
+  background: transparent;
+  border: 1px solid var(--rule);
+  color: var(--ink);
+  @apply inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-medium transition;
+}
+.btn-secondary:hover { background: var(--accent-soft); }
+
+/* ------------------------------------------------------------- typography */
+
+.kicker {
+  color: var(--ink-3);
+  font-family: var(--font-body);
+  @apply uppercase tracking-[0.16em] text-xs;
 }
 
-/* Kicker & Display */
-.kicker { @apply uppercase tracking-widest text-xs text-white/60; }
-.display { @apply text-3xl sm:text-5xl font-semibold leading-tight; }
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  @apply text-[2.75rem] sm:text-[4.25rem] leading-[1.03];
+}
 
-.section-divider { @apply h-px bg-white/10 w-full; }
+.section-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  @apply text-3xl sm:text-[2.75rem] leading-[1.08];
+}
+
+.entry-title {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  @apply text-xl sm:text-[1.6rem] leading-snug;
+}
+
+.lede { color: var(--ink-2); @apply text-[1.3rem] leading-[1.5]; }
+.muted { color: var(--ink-2); @apply text-[1.0625rem] leading-[1.6]; }
+.faint { color: var(--ink-3); @apply text-[0.9375rem] leading-relaxed; }
+
+.link-accent { color: var(--accent); text-underline-offset: 3px; }
+.link-accent:hover { text-decoration: underline; }
+
+/* Tool lists under a project. Deliberately plain text rather than pill
+   chips: a wall of chips reads as keyword stuffing and flattens everything
+   to the same visual weight. */
+.tools {
+  color: var(--ink-3);
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  @apply text-[0.8125rem] tracking-wide;
+}
 
 /* ---------------------------------------------------------------- a11y */
 
@@ -50,12 +248,9 @@ body {
  * Visible focus indicator. Tailwind's preflight resets the browser's default
  * outline, and nothing replaced it, so keyboard users had no way to tell where
  * they were on the page. WCAG 2.4.7 (Focus Visible, AA).
- *
- * :focus-visible rather than :focus, so the ring appears for keyboard
- * navigation but not on mouse clicks.
  */
 :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-  outline: 3px solid #C4A7FF;
+  outline: 3px solid var(--accent);
   outline-offset: 3px;
   border-radius: 4px;
 }
@@ -70,13 +265,14 @@ body {
 .skip-link:focus {
   left: 0.75rem;
   top: 0.75rem;
-  @apply px-4 py-2 rounded-lg bg-white text-black font-medium;
+  background: var(--ink);
+  color: var(--paper);
+  @apply px-4 py-2 rounded-lg font-medium;
 }
 
 /*
  * Respect the OS "reduce motion" setting. Vestibular disorders and motion
- * sensitivity make transforms and long transitions genuinely unpleasant, and
- * this page animates ~11 elements.
+ * sensitivity make transforms and long transitions genuinely unpleasant.
  */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -87,4 +283,18 @@ body {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Hero entrance. CSS rather than a JS animation library: a JS-driven fade
+   starts at opacity 0, so a slow or failed bundle leaves the headline
+   invisible. This starts visible for anyone without CSS animation support,
+   and the reduce-motion block above flattens it to nothing. */
+.rise {
+  animation: rise 0.45s ease-out both;
+}
+.rise:nth-of-type(2) { animation-delay: 0.05s; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: none; }
 }

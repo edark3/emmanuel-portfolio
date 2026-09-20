@@ -30,12 +30,12 @@ const LinkedInIcon = () => (
 export default function LinkedInPage() {
   return (
     <main className="container py-24">
-      <a href="/" className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white mb-8 transition">
+      <a href="/" className="inline-flex items-center gap-2 text-sm muted hover:text-ink mb-8 transition">
         ← Back to portfolio
       </a>
 
       <h1 className="text-3xl font-semibold mb-2">LinkedIn Highlights</h1>
-      <p className="text-white/70 mb-4">Selected posts — community, sports analytics, and tech.</p>
+      <p className="muted mb-4">Selected posts — community, sports analytics, and tech.</p>
 
       <a
         href="https://www.linkedin.com/in/emmanuel-darkwa-b83641250/"
@@ -59,13 +59,13 @@ export default function LinkedInPage() {
               <LinkedInIcon />
               <span className="font-semibold text-white">{p.label}</span>
             </div>
-            <p className="text-white/60 text-sm flex-1">{p.description}</p>
+            <p className="muted text-sm flex-1">{p.description}</p>
             <div className="flex flex-wrap gap-2">
               {p.tags.map((t) => (
-                <span key={t} className="glass px-2.5 py-1 rounded-full text-xs text-white/60">{t}</span>
+                <span key={t} className="glass px-2.5 py-1 rounded-full text-xs muted">{t}</span>
               ))}
             </div>
-            <span className="text-sm text-white/40">Read on LinkedIn →</span>
+            <span className="text-sm faint">Read on LinkedIn →</span>
           </a>
         ))}
       </div>

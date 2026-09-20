@@ -21,12 +21,12 @@ function InstagramIcon({ className = 'w-4 h-4' }: { className?: string }) {
 export default function CreativesPage() {
   return (
     <main className="container py-24">
-      <a href="/" className="inline-flex items-center gap-2 text-sm text-white/60 hover:text-white mb-8 transition">
+      <a href="/" className="inline-flex items-center gap-2 text-sm muted hover:text-ink mb-8 transition">
         ← Back to portfolio
       </a>
 
       <h1 className="text-3xl font-semibold mb-2">Creatives</h1>
-      <p className="text-white/70 mb-6">Sports, tech, fashion, and hoops. Content that reflects how I move.</p>
+      <p className="muted mb-6">Sports, tech, fashion, and hoops. Content that reflects how I move.</p>
 
       <div className="flex flex-wrap gap-3 mb-10">
         <a
@@ -60,11 +60,11 @@ export default function CreativesPage() {
             className="panel p-5 hover:bg-white/5 transition flex flex-col gap-2"
           >
             <div className="flex items-center gap-2">
-              <InstagramIcon className="w-5 h-5 text-white/60" />
+              <InstagramIcon className="w-5 h-5 muted" />
               <span className="font-semibold">{r.label}</span>
             </div>
-            <p className="text-white/60 text-sm">{r.description}</p>
-            <span className="text-sm text-white/40 mt-auto">Watch on Instagram →</span>
+            <p className="muted text-sm">{r.description}</p>
+            <span className="text-sm faint mt-auto">Watch on Instagram →</span>
           </a>
         ))}
       </div>
@@ -73,24 +73,24 @@ export default function CreativesPage() {
       <div className="panel p-6 mb-6">
         <div className="flex items-center gap-2 mb-1">
           <div className="text-lg font-semibold">Personal Training</div>
-          <span className="glass px-2.5 py-1 rounded-full text-xs text-white/70">In-House Certified · UIUC</span>
+          <span className="glass px-2.5 py-1 rounded-full text-xs muted">In-House Certified · UIUC</span>
         </div>
-        <p className="text-white/70 text-sm mb-2">
+        <p className="muted text-sm mb-2">
           Certified personal trainer through the University of Illinois. I train clients in person and online — building programs around your goals, schedule, and lifestyle.
         </p>
         <a
           href="https://blogs.illinois.edu/view/9164/523508838"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-sm text-white/50 hover:text-white transition inline-flex items-center gap-1 mb-4"
+          className="text-sm muted hover:text-ink transition inline-flex items-center gap-1 mb-4"
         >
           View certification →
         </a>
-        <p className="text-white/60 text-sm mb-4">Interested in online training? Reach out and let's build something that works for you.</p>
+        <p className="muted text-sm mb-4">Interested in online training? Reach out and let's build something that works for you.</p>
         <div className="flex flex-wrap gap-3">
           <a
             href="mailto:emmandark7@gmail.com"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-aura-purple to-aura-blue text-white hover:opacity-95 transition"
+            className="btn-primary gap-2"
           >
             Email me →
           </a>
@@ -108,11 +108,11 @@ export default function CreativesPage() {
 
       <div className="panel p-6">
         <div className="text-lg font-semibold mb-1">Work with me</div>
-        <p className="text-white/70 text-sm mb-4">Open to brand collabs, sponsorships, PR packages, and creative partnerships. Reach out however works for you.</p>
+        <p className="muted text-sm mb-4">Open to brand collabs, sponsorships, PR packages, and creative partnerships. Reach out however works for you.</p>
         <div className="flex flex-wrap gap-3">
           <a
             href="mailto:emmandark7@gmail.com"
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-aura-purple to-aura-blue text-white hover:opacity-95 transition"
+            className="btn-primary gap-2"
           >
             Email me →
           </a>
