@@ -93,7 +93,7 @@ const PROJECTS = [
   {
     title: 'Financial operations forecasting',
     icon: TrendingUp,
-    tone: 'tone-orange',
+    tone: 'tone-green',
     body:
       'Driver-based forecasting models and budget dashboards for a Division I athletics program. Historical actuals and forward-looking assumptions in one place, so leadership can scenario-plan live instead of waiting on a static spreadsheet.',
     tools: 'Power BI · Financial modeling · SQL',
