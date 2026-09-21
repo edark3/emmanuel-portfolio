@@ -278,7 +278,7 @@ export default function Page() {
             {PROFILE.headline}
           </h1>
 
-          <div className="rise measure mx-auto mt-7 space-y-5">
+          <div className="rise measure-wide mx-auto mt-7 space-y-5">
             <p className="lede">
               I am a data analyst at University of Illinois Athletics, building the pipelines,
               models, and dashboards people actually make decisions with.
@@ -322,11 +322,11 @@ export default function Page() {
 
         {/* FOCUS */}
         <Section id="work" title="What I work on">
-          <div className="space-y-14 measure mx-auto">
+          <div className="grid lg:grid-cols-2 gap-x-14 gap-y-14">
             {FOCUS.map((f) => (
               <div key={f.title}>
                 <h3 className="entry-title">{f.title}</h3>
-                <p className="muted leading-relaxed mt-3">{f.body}</p>
+                <p className="muted leading-relaxed mt-3 measure">{f.body}</p>
                 <p className="tools mt-4">{f.tools}</p>
               </div>
             ))}
@@ -335,9 +335,15 @@ export default function Page() {
 
         {/* PROJECTS */}
         <Section id="projects" title="Selected work">
-          <div className="space-y-6">
+          <div className="grid lg:grid-cols-2 gap-6 items-start">
             {PROJECTS.map((p, i) => (
-              <article key={p.title} className={`${i % 2 === 1 ? 'card-invert' : 'panel'} ${p.tone} p-7 sm:p-9`}>
+              /* Checkerboard rather than straight alternation: in a two column
+                 grid, `i % 2` puts every dark tile in the right hand column,
+                 which reads as two striped columns instead of a mix. */
+              <article
+                key={p.title}
+                className={`${(Math.floor(i / 2) + i) % 2 === 1 ? 'card-invert' : 'panel'} ${p.tone} p-7 sm:p-9`}
+              >
                 <p.icon aria-hidden="true" strokeWidth={1.75} className="w-7 h-7 mb-4" style={{ color: 'var(--tone)' }} />
                 <h3 className="entry-title">{p.title}</h3>
                 <p className="muted leading-relaxed mt-3 measure">{p.body}</p>
@@ -364,7 +370,7 @@ export default function Page() {
 
         {/* ABOUT */}
         <Section id="about" title="About">
-          <div className="measure mx-auto space-y-5">
+          <div className="measure-wide mx-auto space-y-5">
             <p className="muted leading-relaxed">
               I have been a builder since I was a kid. I was the Lego kid, dumping the whole bin
               out and building something that was not on the box. That never really left me, it
@@ -388,7 +394,7 @@ export default function Page() {
 
         {/* CERTS */}
         <Section id="certs" title="Certifications">
-          <ul className="space-y-5 measure mx-auto">
+          <ul className="space-y-5 measure-wide mx-auto">
             {CERTS.map((c) => (
               <li key={c.name} className="flex items-baseline justify-between gap-6">
                 <span>{c.name}</span>
@@ -397,7 +403,7 @@ export default function Page() {
             ))}
           </ul>
 
-          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 gap-5">
+          <div className="mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
             {CERTS.map((c) => (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img key={c.img} src={c.img} alt={c.name} loading="lazy" decoding="async" className="panel w-full h-auto" />
@@ -407,7 +413,7 @@ export default function Page() {
 
         {/* BEYOND */}
         <Section id="beyond" title="Beyond the work">
-          <dl className="space-y-8 measure mx-auto">
+          <dl className="grid sm:grid-cols-2 gap-x-14 gap-y-8 measure-wide mx-auto">
             {BEYOND.map(([label, body]) => (
               <div key={label}>
                 <dt className="font-medium">{label}</dt>
@@ -419,7 +425,7 @@ export default function Page() {
 
         {/* CONTACT */}
         <Section id="contact" title="Get in touch">
-          <p className="lede measure mx-auto text-center">
+          <p className="lede measure-wide mx-auto text-center">
             Currently working full time. Always open to interesting conversations, collaborations,
             and ideas.
           </p>

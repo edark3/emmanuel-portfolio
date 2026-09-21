@@ -105,8 +105,13 @@ body {
  * footer). `.measure` caps running text at roughly 70 characters, which is
  * the whole reason the old grid-of-cards layout was hard to read.
  */
-.container { @apply max-w-4xl mx-auto px-6; }
-.measure   { @apply max-w-[34rem]; }
+.container { @apply max-w-6xl mx-auto px-6; }
+
+/* Running text still gets capped around 70 characters even though the shell
+   is wide now. The width of the page and the width of a line of text are two
+   different problems: columns and cards fill the space, paragraphs do not. */
+.measure      { @apply max-w-[34rem]; }
+.measure-wide { @apply max-w-[46rem]; }
 
 /* Kept so existing markup does not break. The old fixed gradient wash is
    gone; a flat ground is calmer and lets the type carry the page. */
