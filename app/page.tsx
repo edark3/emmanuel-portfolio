@@ -146,10 +146,11 @@ const CERTS = [
 ];
 
 const BEYOND = [
-  ['Sports', 'Lifelong hooper. The basketball tool exists because I care about the game, not only the data.'],
+  ['Sports', 'Lifelong hooper. The basketball tool exists because I care about the game, not only the data. Soccer was my first sport and I picked it back up around the World Cup.'],
   ['Training', 'Certified personal trainer. Consistency is a system, not a mood. Same philosophy I bring to engineering.'],
   ['Creating', 'Content at the intersection of sports, tech, fashion, and hoops culture.'],
   ['Gear', 'I test gadgets and care about the last ten percent of the experience, the part most people skip.'],
+  ['Startups', 'Drawn to early-stage building, especially in Chicago. More interested in what gets made here than in chasing the coast.'],
 ];
 
 /* --------------------------------------------------------------- pieces */
