@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import {
   Activity, BarChart2, Building2, Download, Github, Linkedin, Mail, Menu, MessageSquare,
-  Moon, Search, ShieldAlert, Sun, TrendingUp, Workflow, X,
+  Moon, Search, ShieldAlert, SlidersHorizontal, Sun, TrendingUp, Workflow, X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -80,6 +80,15 @@ const PROJECTS = [
       { label: 'Try it live', href: 'https://basketball-piv-engine.vercel.app' },
       { label: 'Code', href: 'https://github.com/edark3/basketball-piv-engine' },
     ],
+  },
+  {
+    title: 'Market research and risk system',
+    icon: SlidersHorizontal,
+    tone: 'tone-green',
+    body:
+      'A personal research desk for equities and options. Three FastAPI dashboards, four command-line tools, two scheduled jobs. The scanner rebuilds nightly, running roughly 5,180 names through nine gates where any single failure blocks the name. The part I care about is the risk gate: it reads account size from the journal on every call and refuses entry after a losing trade, because the logs showed the failures were never analysis, they were sizing. A failed overnight scan announces itself out loud rather than leaving a stale board looking current.',
+    tools: 'Python · FastAPI · launchd · Market data APIs · Rule engines',
+    links: [{ label: 'Ask me about it', href: `mailto:${PROFILE.email}` }],
   },
   {
     title: 'Automated data pipeline, sports analytics integration',
@@ -427,8 +436,8 @@ export default function Page() {
         {/* CONTACT */}
         <Section id="contact" title="Get in touch">
           <p className="lede measure-wide mx-auto text-center">
-            Currently working full time. Always open to interesting conversations, collaborations,
-            and ideas.
+            Open to data, product and security roles in Chicago or remote. Always up for interesting
+            conversations, collaborations, and ideas.
           </p>
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
             <a href={`mailto:${PROFILE.email}`} className="btn-primary">
