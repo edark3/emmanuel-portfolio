@@ -86,7 +86,7 @@ const PROJECTS = [
     icon: SlidersHorizontal,
     tone: 'tone-green',
     body:
-      'A personal research desk for equities and options. Three FastAPI dashboards, four command-line tools, two scheduled jobs. The scanner rebuilds nightly, running roughly 5,180 names through nine gates where any single failure blocks the name. The part I care about is the risk gate: it reads account size from the journal on every call and refuses entry after a losing trade, because the logs showed the failures were never analysis, they were sizing. A failed overnight scan announces itself out loud rather than leaving a stale board looking current.',
+      'A research platform for screening equities against structural criteria. Three FastAPI dashboards, four command-line tools, two scheduled jobs. The screener rebuilds nightly, running roughly 5,180 names through nine independent gates covering trend structure, base position, volume behavior, liquidity, and event risk. Any single failure blocks the name, so the output is a short list rather than a ranking. A constraint layer sits in front of it, reading current state on every call and refusing anything outside defined limits, because the logs showed the failures were never the analysis, they were the sizing. A failed overnight run announces itself out loud rather than leaving a stale board looking current.',
     tools: 'Python · FastAPI · launchd · Market data APIs · Rule engines',
     links: [{ label: 'Ask me about it', href: `mailto:${PROFILE.email}` }],
   },
