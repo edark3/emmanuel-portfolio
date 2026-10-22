@@ -325,7 +325,7 @@ export default function Page() {
             </div>
             <figcaption className="faint mt-4">
               B.S. Information Sciences, University of Illinois Urbana-Champaign. Minors in computer
-              science, cybersecurity, and health technology.
+              science and health technology.
             </figcaption>
           </figure>
         </section>
