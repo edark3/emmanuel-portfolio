@@ -4,7 +4,7 @@
 import Image from 'next/image';
 import {
   Activity, BarChart2, Building2, ClipboardCheck, Download, Github, Linkedin, Mail, Menu,
-  MessageSquare, Moon, Search, ShieldAlert, SlidersHorizontal, Sun, TrendingUp, Workflow, X,
+  MessageSquare, Moon, Search, ShieldAlert, SlidersHorizontal, Sun, Target, TrendingUp, Workflow, X,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -57,6 +57,17 @@ const FOCUS = [
 ];
 
 const PROJECTS = [
+  {
+    title: 'Always Open',
+    icon: Target,
+    tone: 'tone-blue',
+    body:
+      'How hard was that shot? Every NBA and college attempt gets a number: how often a shot like that one goes in, read off thousands of similar attempts by location, shot type and game clock. The site then says it in plain English rather than a probability, so a running dunk reads as a shot that goes in 96% of the time instead of 0.96, and each night it names the easiest shot and the hardest make. A scheduled job pulls the slate, rates every attempt and republishes the whole site on its own at 5am. The model page states what the model cannot see, defender distance, because no public feed carries it shot by shot, and free throws live on their own page so they never distort a shot number.',
+    tools: 'Python · Next.js · Nightly pipeline · Probability modeling',
+    links: [
+      { label: 'Try it live', href: 'https://alwaysopen-hoops.vercel.app' },
+    ],
+  },
   {
     title: 'Still Open',
     icon: ClipboardCheck,
