@@ -69,18 +69,6 @@ const PROJECTS = [
     ],
   },
   {
-    title: 'Still Open',
-    icon: ClipboardCheck,
-    tone: 'tone-purple',
-    body:
-      'A tracker that tells you which of the roles you applied to are already closed. Boards hand you off to a company and go quiet, so people wait weeks on applications that died the day the req was pulled. The a16z speedrun talent network API returns an open or closed status on a job id and nothing on their board surfaces it, so the app re-checks every tracked role on load and flags the dead ones. Read-only endpoints and open CORS meant no backend was needed at all: the browser calls the API directly and the list stays in local storage, so there is no account and nothing to leak. Built and shipped in a day.',
-    tools: 'Next.js · TypeScript · Third-party REST API · No backend',
-    links: [
-      { label: 'Try it live', href: 'https://still-open-khaki.vercel.app' },
-      { label: 'Code', href: 'https://github.com/edark3/still-open' },
-    ],
-  },
-  {
     title: 'PhishNet AI',
     icon: ShieldAlert,
     tone: 'tone-teal',
@@ -166,6 +154,18 @@ const PROJECTS = [
       'Data workflows, product framing, and an AI search feature for a Fortune 500 company, letting internal users query across company data conversationally. Details are under NDA, but I am happy to walk through the approach.',
     tools: 'Product · Data engineering · AI integration',
     links: [],
+  },
+  {
+    title: 'Still Open',
+    icon: ClipboardCheck,
+    tone: 'tone-purple',
+    body:
+      'A tracker that tells you which of the roles you applied to are already closed. Boards hand you off to a company and go quiet, so people wait weeks on applications that died the day the req was pulled. The a16z speedrun talent network API returns an open or closed status on a job id and nothing on their board surfaces it, so the app re-checks every tracked role on load and flags the dead ones. Read-only endpoints and open CORS meant no backend was needed at all: the browser calls the API directly and the list stays in local storage, so there is no account and nothing to leak. Built and shipped in a day.',
+    tools: 'Next.js · TypeScript · Third-party REST API · No backend',
+    links: [
+      { label: 'Try it live', href: 'https://still-open-khaki.vercel.app' },
+      { label: 'Code', href: 'https://github.com/edark3/still-open' },
+    ],
   },
 ];
 
