@@ -81,6 +81,15 @@ const PROJECTS = [
     ],
   },
   {
+    title: 'Financial operations forecasting',
+    icon: TrendingUp,
+    tone: 'tone-green',
+    body:
+      'Driver-based forecasting models and budget dashboards for a Division I athletics program. Historical actuals and forward-looking assumptions in one place, so leadership can scenario-plan live instead of waiting on a static spreadsheet.',
+    tools: 'Power BI · Financial modeling · SQL',
+    links: [{ label: 'Ask me about it', href: `mailto:${PROFILE.email}` }],
+  },
+  {
     title: 'Market research and risk system',
     icon: SlidersHorizontal,
     tone: 'tone-green',
@@ -109,15 +118,6 @@ const PROJECTS = [
       'Replaced a manual multi-step download with automated Python pipelines pulling six data types across REST API and FTP channels. The API side uses OAuth 2.0 and parses 2,400+ session records. The FTP side filters a national data-sharing network from roughly 11,000 files (2.8 GB) down to the 110 that matter (23 MB), using MLSD batch listing to cut runtime.',
     tools: 'Python · OAuth 2.0 · FTP/FTPS · pandas · ETL',
     links: [],
-  },
-  {
-    title: 'Financial operations forecasting',
-    icon: TrendingUp,
-    tone: 'tone-green',
-    body:
-      'Driver-based forecasting models and budget dashboards for a Division I athletics program. Historical actuals and forward-looking assumptions in one place, so leadership can scenario-plan live instead of waiting on a static spreadsheet.',
-    tools: 'Power BI · Financial modeling · SQL',
-    links: [{ label: 'Ask me about it', href: `mailto:${PROFILE.email}` }],
   },
   {
     title: 'Postgame survey NLP pipeline',
