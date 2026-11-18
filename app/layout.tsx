@@ -1,6 +1,7 @@
 
 import '../styles/globals.css';
 import { Inter } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 
 /*
  * One family, set at very different sizes and weights. Hierarchy comes from
@@ -66,7 +67,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInit }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }
